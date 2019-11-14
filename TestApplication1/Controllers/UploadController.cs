@@ -19,40 +19,38 @@ namespace TestApplication1.Controllers
         //File upload Function
         [HttpPost]
         //public ActionResult Uploading(Student student)
-        public ActionResult Uploading(FormCollection sssss)
+        public ActionResult Uploading(HttpPostedFileBase first, HttpPostedFileBase second)
         {
 
-            string gggg = "";
-            return Json(new { success = true, responseText = "Sudent Data  recieved Successfully" });
-            //try
-            //{
-            //    string firstName = "";
-            //    string secondName = "";
-            //    string Name = student.Name;
+            try
+            {
+                string firstName = "";
+                string secondName = "";
+                //string Name = student.Name;
 
 
 
-            //    if (first.ContentLength > 0)
-            //    {
-            //        firstName = Path.GetFileName(first.FileName);
-            //        string pathToSave = Server.MapPath("~/App_Data/Uploads/Entity");
-            //        string filename = Path.GetFileName(firstName);
-            //        first.SaveAs(Path.Combine(pathToSave, filename));
-            //    }
-            //    if (second.ContentLength > 0)
-            //    {
-            //        secondName = Path.GetFileName(second.FileName);
-            //        string pathToSave = Server.MapPath("~/App_Data/Uploads/JV");
-            //        string filename = Path.GetFileName(secondName);
-            //        second.SaveAs(Path.Combine(pathToSave, filename));
-            //    }
+                if (first.ContentLength > 0)
+                {
+                    firstName = Path.GetFileName(first.FileName);
+                    string pathToSave = Server.MapPath("~/App_Data/Uploads/Entity");
+                    string filename = Path.GetFileName(firstName);
+                    first.SaveAs(Path.Combine(pathToSave, filename));
+                }
+                if (second.ContentLength > 0)
+                {
+                    secondName = Path.GetFileName(second.FileName);
+                    string pathToSave = Server.MapPath("~/App_Data/Uploads/JV");
+                    string filename = Path.GetFileName(secondName);
+                    second.SaveAs(Path.Combine(pathToSave, filename));
+                }
 
-            //    return Json(new { success = true, responseText = "Sudent Data  recieved Successfully" });
-            //}
-            //catch
-            //{
-            //    return Json(new { success = false, responseText = "Request failed" });
-            //}
+                return Json(new { success = true, responseText = "Sudent Data  recieved Successfully" });
+            }
+            catch
+            {
+                return Json(new { success = false, responseText = "Request failed" });
+            }
 
         }
     }
