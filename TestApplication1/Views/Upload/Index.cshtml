@@ -1,0 +1,51 @@
+﻿<label>ID</label>
+<input type="number" value="" name="id" />
+<label>Name</label>
+<input type="Text" value="" name="name" />
+<label>Class</label>
+<input type="Text" value="" name="class" />
+
+
+<input type="file" id="first" name="first" />
+<input type="file" id="second" name="second" />
+<div class="upload-status">No Uploads</div>
+<button id="submit"></button>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+    $(document).on('click', '#submit', function () {
+
+        let url = '@Url.Action("Uploading", "Upload")';
+        let object = {
+            ID: parseInt($("input[name=id]").val()),
+            Name: $("input[name=name]").val(),
+            Class: $("input[name=class]").val()
+        };
+
+        let student = JSON.stringify(object);
+        console.log(student)
+
+        let formData = new FormData();
+        formData.append('first', $('#first')[0].files[0]);
+        formData.append('second', $('#second')[0].files[0]);
+       /// formData.append('student', student);
+
+
+        $.ajax({
+            url: url,
+            data: formData,
+            type: 'POST',
+            contentType: "multipart/form-data",
+            processData: false,
+            beforeSend: function () {
+                $('.upload-status').html('upload Started');
+            },
+            success : function(data){
+            $('.upload-status').html(data); 
+            }
+        });
+    });
+
+</script>

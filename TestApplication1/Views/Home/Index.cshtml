@@ -1,0 +1,37 @@
+﻿@model TestApplication1.Models.Student
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h4>@Model.Name</h4>
+
+@Html.Partial("_TestPartial")
+
+<div id="read">
+
+</div>
+
+<button class="btn btn-primary" data-content="Primary">
+    Hello
+</button>
+<button class="btn btn-danger" data-content="Danger">
+    Danger
+</button>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<Script>
+
+    $(document).on('click', '.btn', function () {
+        var value = $(this).data('content');
+
+        var url = '@Url.Action("ChangeContent", "Home")' + "?selected=" + value;
+
+        $("#read").load(url, function () {
+            //alert("It worked");
+            // add your fade code here
+        })
+    });
+
+</Script>
