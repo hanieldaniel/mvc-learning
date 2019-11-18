@@ -7,7 +7,9 @@
 
 
 <input type="file" id="first" name="first" />
+<input type="hidden" id="first_b64" />
 <input type="file" id="second" name="second" />
+<input type="hidden" id="second_b64" />
 <div class="upload-status">No Uploads</div>
 <button id="submit"></button>
 
@@ -15,29 +17,66 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
 <script>
+    $("#first").change(function () {
+        var FR = new FileReader();
+        FR.addEventListener("load", function (e) {
+            $("#first_b64").val(e.target.result);
+        });
+
+        FR.readAsDataURL($('#first')[0].files[0]);
+    });
+    $("#second").change(function () {
+        var FR = new FileReader();
+        FR.addEventListener("load", function (e) {
+            $("#second_b64").val(e.target.result);
+        });
+
+        FR.readAsDataURL($('#second')[0].files[0]);
+    });
+    
+
     $(document).on('click', '#submit', function () {
 
         let url = '@Url.Action("Uploading", "Upload")';
+        var firstimg;
+        var secondimg;
+        var firstname = "";
+        var secondname = "";
+        if ($('#first')[0].files[0]) {
+            firstname = $('#first')[0].files[0].name;
+        }
+        if ($('#second')[0].files[0]) {
+            secondname = $('#second')[0].files[0].name;
+        }
+
+        
+        firstimg = $("#first_b64").val();
+        secondimg = $("#second_b64").val();
+
         let object = {
             ID: parseInt($("input[name=id]").val()),
             Name: $("input[name=name]").val(),
-            Class: $("input[name=class]").val()
+            Class: $("input[name=class]").val(),
+            First: firstimg,
+            FirstName: firstname,
+            Second: secondimg,
+            SecondName: secondname
         };
 
-        let student = JSON.stringify(object);
-        console.log(student)
 
-        let formData = new FormData();
-        formData.append('first', $('#first')[0].files[0]);
-        formData.append('second', $('#second')[0].files[0]);
+        let student = JSON.stringify(object);
+
+       // let formData = new FormData();
+      //  formData.append('first', $('#first')[0].files[0]);
+      //  formData.append('second', $('#second')[0].files[0]);
        /// formData.append('student', student);
 
 
         $.ajax({
             url: url,
-            data: formData,
+            data: student,
             type: 'POST',
-            contentType: "multipart/form-data",
+            contentType: "application/json",
             processData: false,
             beforeSend: function () {
                 $('.upload-status').html('upload Started');
