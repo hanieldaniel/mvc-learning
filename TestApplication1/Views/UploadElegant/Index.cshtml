@@ -1,0 +1,68 @@
+﻿<label>ID</label>
+<input type="number" value="" name="id" />
+<label>Name</label>
+<input type="Text" value="" name="name" />
+<label>Class</label>
+<input type="Text" value="" name="class" />
+
+
+<input type="file" id="first" name="first" />
+<input type="file" id="second" name="second" />
+<div class="upload-status">No Uploads</div>
+<button id="submit"></button>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+
+<script>
+     $(document).on('click', '#submit', function () {
+
+        let url = '@Url.Action("UploadData", "UploadElegant")';
+        //var firstimg;
+        //var secondimg;
+        //var firstname = "";
+        //var secondname = "";
+        //if ($('#first')[0].files[0]) {
+        //    firstname = $('#first')[0].files[0].name;
+        //}
+        //if ($('#second')[0].files[0]) {
+        //    secondname = $('#second')[0].files[0].name;
+        //}
+
+
+        //firstimg = $("#first_b64").val();
+        //secondimg = $("#second_b64").val();
+
+        let object = {
+            ID: parseInt($("input[name=id]").val()),
+            Name: $("input[name=name]").val(),
+            Section: $("input[name=class]").val(),
+        };
+
+
+        let employee = JSON.stringify(object);
+
+        let formData = new FormData();
+        formData.append('Id', parseInt($("input[name=id]").val()));
+        formData.append('Name', $("input[name=name]").val());
+        formData.append('Section', $("input[name=class]").val());
+        formData.append('First', $('#first')[0].files[0]);
+        formData.append('Second', $('#second')[0].files[0]);
+
+
+        $.ajax({
+            url: url,
+            data: formData,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                $('.upload-status').html('upload Started');
+            },
+            success : function(data){
+                $('.upload-status').html(data);
+            }
+        });
+    });
+</script>
