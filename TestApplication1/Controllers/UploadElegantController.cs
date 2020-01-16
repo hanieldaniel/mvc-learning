@@ -39,6 +39,9 @@ namespace TestApplication1.Controllers
                     string filename = employee.Id + "-activity-master";
                     string fileExtension = Path.GetExtension(employee.First.FileName);
                     string fullFilePath = uploadFolder + filename + fileExtension;
+
+                    //save full path to db... Use it to retrive file during edit or delete file
+
                     employee.First.SaveAs(fullFilePath);
                 }
 
@@ -47,6 +50,9 @@ namespace TestApplication1.Controllers
                     string filename2 = employee.Id + "-jv-template-Master";
                     string fileExtension2 = Path.GetExtension(employee.Second.FileName);
                     string fullFilePath = uploadFolder + filename2 + fileExtension2;
+
+                    //save full path to db... Use it to retrive file during edit or delete file
+
                     employee.First.SaveAs(fullFilePath);
                 }
 
