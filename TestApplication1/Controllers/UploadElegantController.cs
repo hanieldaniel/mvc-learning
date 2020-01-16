@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TestApplication1.Models;
 using TestApplication1.ViewModel;
 
 namespace TestApplication1.Controllers
@@ -16,36 +17,43 @@ namespace TestApplication1.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         public ActionResult UploadData(EmployeeViewModel employee)
         {
             try
             {
-
-                string firstName = "", secondName = "";
-                uint sId = employee.Id;
-                string Name = employee.Name;
-                string sclass = employee.Section;
-
-                if (employee.First.ContentLength > 0)
-                {
-                     firstName = Path.GetFileName(employee.First.FileName);
-                     string pathToSave = Server.MapPath("~/Uploads/Entity");
-                     string filename = Path.GetFileName(firstName);
-                    employee.First.SaveAs(Path.Combine(pathToSave, filename));
-                }
                 
-                if (employee.Second.ContentLength > 0)
+                Employee employeeObject = new Employee()
                 {
-                     secondName = Path.GetFileName(employee.Second.FileName);
-                     string pathToSave = Server.MapPath("~/Uploads/JV");
-                     string filename2 = Path.GetFileName(secondName);
-                    employee.Second.SaveAs(Path.Combine(pathToSave, filename2));
+                    Id = employee.Id,
+                    Name = employee.Name,
+                    Section = employee.Section
+                };
+
+                string uploadFolder = Request.PhysicalApplicationPath + "Uploads\\";
+
+                if (employee.First != null)
+                {
+                    string filename = employee.Id + "-activity-master";
+                    string fileExtension = Path.GetExtension(employee.First.FileName);
+                    string fullFilePath = uploadFolder + filename + fileExtension;
+                    employee.First.SaveAs(fullFilePath);
                 }
 
-                return Json(new { success = true, responseText = "Sudent Data  recieved Successfully" });
+                if (employee.Second != null)
+                {
+                    string filename2 = employee.Id + "-jv-template-Master";
+                    string fileExtension2 = Path.GetExtension(employee.Second.FileName);
+                    string fullFilePath = uploadFolder + filename2 + fileExtension2;
+                    employee.First.SaveAs(fullFilePath);
+                }
+
+                return Json(new { success = true, responseText = "Data recieved Successfully" });
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
 
                 return Json(new { success = false, responseText = ex.StackTrace });
             }
